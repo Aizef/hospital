@@ -80,7 +80,11 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        return redirect('/login')
+        db_sess = db_session.create_session()
+        form = LoginForm()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        login_user(user, remember=form.remember_me.data)
+        return redirect("/")
     return render_template('register.html', title='Регистрация', form=form)
 
 
@@ -107,7 +111,6 @@ def logout():
 
 
 @app.route("/")
-@app.route("/index")
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
