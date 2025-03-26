@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if appointments %}
+    {% for item in appointments%}
+    <div class="col-md6 border rounded">
+        <h2>Запись №{{loop.index}}</h2>
+        <div>
+            Дата приёма: {{item.date}}
+        </div>
+        <div>
+            Время приёма: {{item.time}}
+        </div>
+        <div>
+            ФИО врача: {{item.doctor}}
+        </div>
+        <div>
+            Дата записи - {{item.created_date}}
+        </div>
+        <a href="/appointments/{{ item.id }}" class="btn btn-warning">
+            Перенести
+        </a>
+        <a href="/appointments_delete/{{ item.id }}" class="btn btn-danger">
+            Отменить
+        </a>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="col-md6 border rounded">
+        <h2>Записей пока нет</h2>
+    </div>
+  {% endif %}
+{% endblock %}

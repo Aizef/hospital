@@ -6,32 +6,48 @@ from data.models.users import User
 def default_test(db_session):
     db_sess = db_session.create_session()
 
-    if not db_sess.query(Post).filter(Post.name == "Администратор").first():
+    if not db_sess.query(Post).filter(Post.name == "Пациент").first():
         post = Post()
-        post.name = "Администратор"
-        db_sess.add(post)
-
-    if not db_sess.query(Post).filter(Post.name == "Модератор").first():
-        post = Post()
-        post.name = "Модератор"
-        db_sess.add(post)
-
-    if not db_sess.query(Post).filter(Post.name == "Пользователь").first():
-        post = Post()
-        post.name = "Пользователь"
+        post.name = "Пациент"
         db_sess.add(post)
     db_sess.commit()
 
-    if not db_sess.query(User).filter(User.email == "email@email.ru").first():
+    if not db_sess.query(Post).filter(Post.name == "Врач").first():
+        post = Post()
+        post.name = "Врач"
+        db_sess.add(post)
+
+    if not db_sess.query(User).filter(User.email == "email1@email.ru").first():
         user = User()
-        user.name = "Пользователь 1"
-        user.about = "биография пользователя 1"
-        user.email = "email@email.ru"
+        user.name = "Врач 1"
+        user.email = "email1@email.ru"
         db_sess.add(user)
     db_sess.commit()
 
-    user = db_sess.query(User).filter(User.email == "email@email.ru").first()
-    user.post_id = 3
+    if not db_sess.query(User).filter(User.email == "email2@email.ru").first():
+        user = User()
+        user.name = "Врач 2"
+        user.email = "email2@email.ru"
+        db_sess.add(user)
+    db_sess.commit()
+
+    if not db_sess.query(User).filter(User.email == "email3@email.ru").first():
+        user = User()
+        user.name = "Врач 3"
+        user.email = "email3@email.ru"
+        db_sess.add(user)
+    db_sess.commit()
+
+    user = db_sess.query(User).filter(User.email == "email1@email.ru").first()
+    user.post_id = 2
+    db_sess.commit()
+
+    user = db_sess.query(User).filter(User.email == "email2@email.ru").first()
+    user.post_id = 2
+    db_sess.commit()
+
+    user = db_sess.query(User).filter(User.email == "email3@email.ru").first()
+    user.post_id = 2
     db_sess.commit()
 
     if not db_sess.query(New).filter(New.title == "Первая новость").first():

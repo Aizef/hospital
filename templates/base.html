@@ -3,6 +3,7 @@
   <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Bootstrap 4 CSS -->
       <link rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -11,18 +12,26 @@
   </head>
   <body>
     <header>
-      <nav class="navbar bg-dark" data-bs-theme="dark">
-          <a class="btn btn-primary" href="/">Главная</a>
-          <a class="btn btn-primary" href="/">Услуги</a>
-          <a class="btn btn-primary" href="/">Врачи</a>
-          <a class="btn btn-primary" href="/">Запись на прием</a>
+      <nav class="navbar navbar-dark bg-dark"> <!-- Исправлено для Bootstrap 4 -->
+          <a class="btn btn-dark btn-lg" href="/">Главная</a>
+          <a class="btn btn-dark btn-lg" href="/services">Услуги</a>
+          <a class="btn btn-dark btn-lg" href="/doctors">Врачи</a>
+          <a class="btn btn-dark btn-lg" href="/appointment">Запись на прием</a>
           {% if current_user.is_authenticated %}
-            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+            <div class="dropdown">
+              <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> <!-- data-bs-toggle → data-toggle -->
+                {{ current_user.name }}
+              </button>
+              <ul class="dropdown-menu" style="right: 0; left: auto;">
+                <li><a class="dropdown-item" href="/history">История записей</a></li>
+                <li><a class="dropdown-item" href="/logout">Выйти из аккаунта</a></li>
+              </ul>
+            </div>
           {% else %}
-            <p>
-                <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-                <a class="btn btn-success" href="/login">Войти</a>
-            </p>
+            <div>
+                <a class="btn btn-primary btn-lg" href="/register">Зарегистрироваться</a>
+                <a class="btn btn-success btn-lg" href="/login">Войти</a>
+            </div>
           {% endif %}
       </nav>
     </header>
@@ -30,5 +39,10 @@
     <main role="main" class="container">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Обязательные скрипты для Bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   </body>
 </html>
