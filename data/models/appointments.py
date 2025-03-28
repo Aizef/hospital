@@ -14,7 +14,8 @@ class Appointment(SqlAlchemyBase):
     date = sqlalchemy.Column(sqlalchemy.Date)
     time = sqlalchemy.Column(sqlalchemy.Time)
     doctor = sqlalchemy.Column(sqlalchemy.String)
+    service = sqlalchemy.Column(sqlalchemy.String)
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
                                 sqlalchemy.ForeignKey("users.id"))
 
-    user = orm.relationship('User')
+    user = orm.relationship("User", back_populates="appointments")

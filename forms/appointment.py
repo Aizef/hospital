@@ -12,10 +12,19 @@ def add_time(t, delta):
     return result.time()
 
 
-class AppointmentForm(FlaskForm):
-    dates = [datetime.now().date() + i * timedelta(days=1) for i in range(14)]
+class AppointmentServiceForm(FlaskForm):
+    service = SelectField("Специальность", choices=[], validators=[DataRequired()])
+    submit = SubmitField('Применить')
+
+
+class AppointmentDoctorForm(FlaskForm):
+    doctor = SelectField("Врач", choices=[], validators=[DataRequired()])
+    submit = SubmitField('Применить')
+
+
+class AppointmentDatetimeForm(FlaskForm):
+    dates = [datetime.now().date() + (i + 1) * timedelta(days=1) for i in range(14)]
     times = [add_time(time(8), i * timedelta(minutes=30)) for i in range(24)]
     date = SelectField("Дата приёма", choices=dates, validators=[DataRequired()])
     time = SelectField("Время приёма", choices=times, validators=[DataRequired()])
-    doctor = SelectField("Врач", choices=[], validators=[DataRequired()])
     submit = SubmitField('Применить')

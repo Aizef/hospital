@@ -4,8 +4,8 @@ from sqlalchemy import orm
 from data.db_session import SqlAlchemyBase
 
 
-class Post(SqlAlchemyBase):
-    __tablename__ = 'posts'
+class Service(SqlAlchemyBase):
+    __tablename__ = 'services'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
@@ -13,5 +13,4 @@ class Post(SqlAlchemyBase):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
 
-    # Пользователи, которые принадлежат данной должности
-    users = orm.relationship("User", back_populates='post')
+    doctors = orm.relationship("Doctor", back_populates='services')

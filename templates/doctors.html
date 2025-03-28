@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for item in doctors%}
+    <div class="col-md6 border rounded">
+        <h2>{{item.name}}</h2>
+        <div>
+            Специальность - {{item.services.name}}
+        </div>
+        {% if current_user.is_authenticated %}
+        <a href="/appointment_datetime/{{ item.id }}" class="btn btn-primary">
+            Записаться
+        </a>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}

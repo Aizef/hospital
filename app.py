@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect, request, make_response, session, abort
 from data import db_session
 from data.models.users import User
-from data.models.news import New
+from data.models.spezialization import Service
+from data.models.doctors import Doctor
 from data.models.appointments import Appointment
-from forms.news import NewsForm
 from forms.user import LoginForm, RegisterForm
-from forms.appointment import AppointmentForm
-from test import default_test
+from forms.appointment import AppointmentServiceForm, AppointmentDatetimeForm, AppointmentDoctorForm
+from db.db_fill import db_fill
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import datetime
 
@@ -90,53 +90,13 @@ def logout():
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-    if current_user.is_authenticated:
-        news = db_sess.query(New).filter(
-            (New.user == current_user) | (New.is_private != True))
-    else:
-        news = db_sess.query(New).filter(New.is_private != True)
-    return render_template("index.html", news=news)
+    return render_template("main.html")
 
-@app.route('/news/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_news(id):
-    form = NewsForm()
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        news = db_sess.query(New).filter(New.id == id,
-                                         New.user == current_user
-                                         ).first()
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
-        else:
-            abort(404)
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = db_sess.query(New).filter(New.id == id,
-                                         New.user == current_user
-                                         ).first()
-        if news:
-            news.title = form.title.data
-            news.content = form.content.data
-            news.is_private = form.is_private.data
-            db_sess.commit()
-            return redirect('/')
-        else:
-            abort(404)
-    return render_template('news.html',
-                           title='Редактирование новости',
-                           form=form
-                           )
-
-@app.route('/appointments/<int:id>', methods=['GET', 'POST'])
+@app.route('/edit_appointment/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_appointments(id):
-    form = AppointmentForm()
-    db_sess = db_session.create_session()
-    doctors = db_sess.query(User).filter(User.post_id == 2)
-    form.doctor.choices = list(map(lambda x: x.name, doctors))
+    form = AppointmentDatetimeForm()
+    items = [i for i in form][:-2]
     if request.method == "GET":
         db_sess = db_session.create_session()
         appointments = db_sess.query(Appointment).filter(Appointment.id == id,
@@ -145,7 +105,6 @@ def edit_appointments(id):
         if appointments:
             form.date.data = appointments.date.strftime('%Y-%m-%d')
             form.time.data = appointments.time.strftime('%H:%M:%S')
-            form.doctor.data = appointments.doctor
         else:
             abort(404)
     if form.validate_on_submit():
@@ -156,15 +115,11 @@ def edit_appointments(id):
         if appointments:
             appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
             appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
-            appointments.doctor = form.doctor.data
             db_sess.commit()
-            return redirect('/')
+            return redirect('/history')
         else:
             abort(404)
-    return render_template('appointment.html',
-                           title='Изменение записи',
-                           form=form
-                           )
+    return render_template('appointment.html', title='Перенос записи', form=form, items=items)
 
 @app.route('/appointments_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -178,54 +133,76 @@ def appointments_delete(id):
         abort(404)
     return redirect('/history')
 
-@app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
-@login_required
-def news_delete(id):
-    db_sess = db_session.create_session()
-    news = db_sess.query(New).filter(New.id == id, New.user == current_user).first()
-    if news:
-        db_sess.delete(news)
-        db_sess.commit()
-    else:
-        abort(404)
-    return redirect('/')
-
-@app.route('/news', methods=['GET', 'POST'])
-@login_required
-def add_news():
-    form = NewsForm()
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = New()
-        news.title = form.title.data
-        news.content = form.content.data
-        news.is_private = form.is_private.data
-        current_user.news.append(news)
-        db_sess.merge(current_user)
-        db_sess.commit()
-        return redirect('/')
-    return render_template('news.html', title='Добавление новости',
-                           form=form)
-
 @app.route('/appointment', methods=['GET', 'POST'])
 @login_required
-def add_appointment():
-    form = AppointmentForm()
+def appointment_service():
+    form = AppointmentServiceForm()
     db_sess = db_session.create_session()
-    doctors = db_sess.query(User).filter(User.post_id == 2)
-    form.doctor.choices = list(map(lambda x: x.name, doctors))
+    form.service.choices = [i.name for i in db_sess.query(Service).all()]
+    items = [i for i in form][:-2]
+    if form.validate_on_submit():
+        session['appointment_data'] = {
+            'service': form.service.data,
+            'user_id': current_user.id
+        }
+        session.modified = True
+        return redirect('/appointment_doctor')
+    return render_template('appointment.html', title='Выбор специализации',
+                           form=form, items=items)
+
+@app.route('/appointment_doctor', methods=['GET', 'POST'])
+@login_required
+def appointment_doctor():
+    form = AppointmentDoctorForm()
+    db_sess = db_session.create_session()
+    service = db_sess.query(Service).filter(Service.name == session['appointment_data']["service"]).first()
+    form.doctor.choices = [i.name for i in db_sess.query(Doctor).filter(Doctor.service_id == service.id)]
+    items = [i for i in form][:-2]
+    if form.validate_on_submit():
+        session['appointment_data']["doctor"] = form.doctor.data
+        session.modified = True
+        return redirect('/appointment_datetime')
+    return render_template('appointment.html', title='Выбор врача',
+                           form=form, items=items)
+
+@app.route('/appointment_datetime', methods=['GET', 'POST'])
+@login_required
+def appointment_datetime():
+    form = AppointmentDatetimeForm()
+    items = [i for i in form][:-2]
+    if form.validate_on_submit():
+        appointments = Appointment()
+        appointments.service = session['appointment_data']["service"]
+        appointments.doctor = session['appointment_data']["doctor"]
+        appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+        appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        appointments.user_id = current_user.id
+        db_sess = db_session.create_session()
+        db_sess.add(appointments)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('appointment.html', title='Выбор даты и времени приёма',
+                           form=form, items=items)
+
+@app.route('/appointment_datetime/<int:id>', methods=['GET', 'POST'])
+@login_required
+def appointment_datetime_1(id):
+    form = AppointmentDatetimeForm()
+    items = [i for i in form][:-2]
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         appointments = Appointment()
+        appointments.service = db_sess.query(Doctor).filter(Doctor.id == id).first().services.name
+        appointments.doctor = db_sess.query(Doctor).filter(Doctor.id == id).first().name
         appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
         appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
-        appointments.doctor = form.doctor.data
         appointments.user_id = current_user.id
         db_sess.add(appointments)
         db_sess.commit()
         return redirect('/')
-    return render_template('appointment.html', title='Запись к врачу',
-                           form=form)
+    return render_template('appointment.html', title='Выбор даты и времени приёма',
+                           form=form, items=items)
+
 
 @app.route("/history")
 def history():
@@ -235,10 +212,17 @@ def history():
     return render_template('history.html', title='История записей',
                            appointments=appointments)
 
+@app.route("/doctors")
+def doctors():
+    db_sess = db_session.create_session()
+    doctors = db_sess.query(Doctor).all()
+    return render_template('doctors.html', title='История записей',
+                           doctors=doctors)
+
 
 def main():
-    db_session.global_init("db/blogs.db")
-    default_test(db_session)
+    db_session.global_init("db/database.db")
+    db_fill(db_session)
     app.run()
 
 
