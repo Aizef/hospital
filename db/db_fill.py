@@ -1,4 +1,4 @@
-from data.models.spezialization import Service
+from data.models.services import Service
 from data.models.doctors import Doctor
 
 

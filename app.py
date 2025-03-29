@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, request, make_response, session, abort
 from data import db_session
 from data.models.users import User
-from data.models.spezialization import Service
+from data.models.services import Service
 from data.models.doctors import Doctor
 from data.models.appointments import Appointment
 from forms.user import LoginForm, RegisterForm
