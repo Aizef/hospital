@@ -3,7 +3,7 @@
 {% block content %}
   {% if appointments %}
     {% for item in appointments%}
-    <div class="col-md6 border rounded">
+    <div class="col-md-6 offset-md-3 border rounded">
         <h2>Запись №{{loop.index}}</h2>
         <div>
             Дата приёма - {{item.date}}
@@ -18,7 +18,7 @@
             ФИО врача - {{item.doctor}}
         </div>
         <div>
-            Дата записи - {{item.created_date}}
+            Дата записи - {{item.created_date.strftime("%Y-%m-%d %H:%M")}}
         </div>
         <a href="/edit_appointment/{{ item.id }}" class="btn btn-primary">
             Перенести

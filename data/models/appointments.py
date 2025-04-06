@@ -10,7 +10,7 @@ class Appointment(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
-                                     default=datetime.datetime.now)
+                                     default=datetime.datetime.now().replace(second=0, microsecond=0))
     date = sqlalchemy.Column(sqlalchemy.Date)
     time = sqlalchemy.Column(sqlalchemy.Time)
     doctor = sqlalchemy.Column(sqlalchemy.String)

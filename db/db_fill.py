@@ -13,10 +13,12 @@ def db_fill(db_session):
         doctor = Doctor()
         doctor.name = "Сидоров А.П."
         doctor.services = service
+        doctor.shift = 0
         db_sess.add(doctor)
         doctor = Doctor()
         doctor.name = "Васильев Л.Д."
         doctor.services = service
+        doctor.shift = 1
         db_sess.add(doctor)
     db_sess.commit()
 
@@ -28,10 +30,12 @@ def db_fill(db_session):
         doctor = Doctor()
         doctor.name = "Петров Д.В."
         doctor.services = service
+        doctor.shift = 0
         db_sess.add(doctor)
         doctor = Doctor()
         doctor.name = "Матвеев Г.М."
         doctor.services = service
+        doctor.shift = 1
         db_sess.add(doctor)
     db_sess.commit()
 
@@ -43,10 +47,12 @@ def db_fill(db_session):
         doctor = Doctor()
         doctor.name = "Иванов В.К."
         doctor.services = service
+        doctor.shift = 0
         db_sess.add(doctor)
         doctor = Doctor()
         doctor.name = "Данилов Н.К."
         doctor.services = service
+        doctor.shift = 1
         db_sess.add(doctor)
     db_sess.commit()
 
@@ -58,10 +64,12 @@ def db_fill(db_session):
         doctor = Doctor()
         doctor.name = "Максимов А.М."
         doctor.services = service
+        doctor.shift = 0
         db_sess.add(doctor)
         doctor = Doctor()
         doctor.name = "Дмитриев П.П."
         doctor.services = service
+        doctor.shift = 1
         db_sess.add(doctor)
     db_sess.commit()
 
@@ -73,9 +81,11 @@ def db_fill(db_session):
         doctor = Doctor()
         doctor.name = "Михайлов К.С."
         doctor.services = service
+        doctor.shift = 0
         db_sess.add(doctor)
         doctor = Doctor()
         doctor.name = "Леонидов Р.В."
         doctor.services = service
+        doctor.shift = 1
         db_sess.add(doctor)
     db_sess.commit()

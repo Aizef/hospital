@@ -97,6 +97,9 @@ def index():
 def edit_appointments(id):
     form = AppointmentDatetimeForm()
     items = [i for i in form][:-2]
+    db_sess = db_session.create_session()
+    shift = db_sess.query(Doctor).filter(Doctor.id == id).first().shift
+    form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     if request.method == "GET":
         db_sess = db_session.create_session()
         appointments = db_sess.query(Appointment).filter(Appointment.id == id,
@@ -169,6 +172,9 @@ def appointment_doctor():
 @login_required
 def appointment_datetime():
     form = AppointmentDatetimeForm()
+    db_sess = db_session.create_session()
+    shift = db_sess.query(Doctor).filter(Doctor.name == session['appointment_data']["doctor"]).first().shift
+    form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     items = [i for i in form][:-2]
     if form.validate_on_submit():
         appointments = Appointment()
@@ -186,8 +192,11 @@ def appointment_datetime():
 
 @app.route('/appointment_datetime/<int:id>', methods=['GET', 'POST'])
 @login_required
-def appointment_datetime_1(id):
+def appointment_datetime_doctor(id):
     form = AppointmentDatetimeForm()
+    db_sess = db_session.create_session()
+    shift = db_sess.query(Doctor).filter(Doctor.id == id).first().shift
+    form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     items = [i for i in form][:-2]
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -214,10 +223,12 @@ def history():
 
 @app.route("/doctors")
 def doctors():
+    shift_0 = [(p, k) for p in range(24) for k in range(5) if p < 12]
+    shift_1 = [(p, k) for p in range(24) for k in range(5) if p >= 12]
     db_sess = db_session.create_session()
     doctors = db_sess.query(Doctor).all()
     return render_template('doctors.html', title='История записей',
-                           doctors=doctors)
+                           doctors=doctors, shift_0=shift_0, shift_1=shift_1)
 
 
 def main():

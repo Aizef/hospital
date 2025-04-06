@@ -24,6 +24,7 @@ class AppointmentDoctorForm(FlaskForm):
 
 class AppointmentDatetimeForm(FlaskForm):
     dates = [datetime.now().date() + (i + 1) * timedelta(days=1) for i in range(14)]
+    dates = [i for i in dates if i.weekday() not in (5, 6)]
     times = [add_time(time(8), i * timedelta(minutes=30)) for i in range(24)]
     date = SelectField("Дата приёма", choices=dates, validators=[DataRequired()])
     time = SelectField("Время приёма", choices=times, validators=[DataRequired()])
