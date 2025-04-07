@@ -18,13 +18,13 @@
           <a class="btn btn-dark btn-lg" href="/">Главная</a>
           <a class="btn btn-dark btn-lg" href="/doctors">Врачи</a>
           {% if current_user.is_authenticated %}
-            <a class="btn btn-dark btn-lg" href="/appointment">Запись на прием</a>
+            <a class="btn btn-dark btn-lg" href="/api/appointment">Запись на прием</a>
             <div class="dropdown">
               <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                 {{ current_user.name }}
               </button>
               <ul class="dropdown-menu" style="right: 0; left: auto;">
-                <li><a class="dropdown-item" href="/history">История записей</a></li>
+                <li><a class="dropdown-item" href="/api/history">История записей</a></li>
                 <li><a class="dropdown-item" href="/logout">Выйти из аккаунта</a></li>
               </ul>
             </div>

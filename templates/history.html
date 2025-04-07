@@ -20,10 +20,10 @@
         <div>
             Дата записи - {{item.created_date.strftime("%Y-%m-%d %H:%M")}}
         </div>
-        <a href="/edit_appointment/{{ item.id }}" class="btn btn-primary">
+        <a href="/api/edit_appointment/{{ item.id }}" class="btn btn-primary">
             Перенести
         </a>
-        <a href="/appointments_delete/{{ item.id }}" class="btn btn-danger">
+        <a href="/api/appointments_delete/{{ item.id }}" class="btn btn-danger">
             Отменить
         </a>
     </div>
