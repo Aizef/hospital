@@ -223,10 +223,23 @@ def history():
 
 @app.route("/doctors")
 def doctors():
+    specialty = request.args.get('specialty')
     shift_0 = [(p, k) for p in range(24) for k in range(5) if p < 12]
     shift_1 = [(p, k) for p in range(24) for k in range(5) if p >= 12]
     db_sess = db_session.create_session()
-    doctors = db_sess.query(Doctor).all()
+    if not specialty:
+        doctors = db_sess.query(Doctor).all()
+    else:
+        doctors = db_sess.query(Doctor).filter(Doctor.service_id == specialty)
+    return render_template('doctors.html', title='История записей',
+                           doctors=doctors, shift_0=shift_0, shift_1=shift_1)
+
+@app.route("/doctors/<int:id>")
+def doctors_search(id):
+    shift_0 = [(p, k) for p in range(24) for k in range(5) if p < 12]
+    shift_1 = [(p, k) for p in range(24) for k in range(5) if p >= 12]
+    db_sess = db_session.create_session()
+    doctors = db_sess.query(Doctor).filter(Doctor.service_id == id).all()
     return render_template('doctors.html', title='История записей',
                            doctors=doctors, shift_0=shift_0, shift_1=shift_1)
 

@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form action="/doctors" method="get">
+  <div class="input-group">
+    <select class="form-select" name="specialty">
+        <option value="" selected disabled hidden>Выберите специальность...</option>
+        <option value="">Все</option>
+      <option value="1">Хирург</option>
+      <option value="2">Офтальмолог</option>
+      <option value="3">Психолог</option>
+      <option value="4">Стоматолог</option>
+      <option value="5">Терапевт</option>
+    </select>
+    <button type="submit" class="btn btn-outline-secondary">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</form>
     {% for item in doctors%}
     <div class="col-md6 rounded">
         <header class="text-center">
