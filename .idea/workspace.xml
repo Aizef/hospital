@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bb8be8d-808f-4920-9043-5372e57fd46c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/errors/400.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hospital1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hospital1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="7bb8be8d-808f-4920-9043-5372e57fd46c" name="Changes" comment="add errors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/error_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/error_handlers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/errors/401.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/errors/401.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/errors/403.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/errors/403.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/errors/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/errors/404.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +99,19 @@
       <option name="presentableId" value="Default" />
       <updated>1744051484247</updated>
     </task>
+    <task id="LOCAL-00001" summary="add errors">
+      <option name="closed" value="true" />
+      <created>1744800462283</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744800462283</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="add errors" />
   </component>
 </project>
