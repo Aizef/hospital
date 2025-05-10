@@ -7,6 +7,7 @@ from data import db_session
 from data.models.appointments import Appointment
 from data.models.doctors import Doctor
 from data.models.services import Service
+from data.models.appointments import Appointment
 from forms.appointment import AppointmentDatetimeForm, AppointmentServiceForm, AppointmentDoctorForm
 
 blueprint = Blueprint(
@@ -31,6 +32,8 @@ def edit_appointments(id):
     form = AppointmentDatetimeForm()
     items = [i for i in form][:-2]
     db_sess = db_session.create_session()
+    appointments = db_sess.query(Appointment).filter(Appointment.doctor == session['appointment_data']["doctor"]).all()
+    times = [(i.date, i.time) for i in appointments]
     shift = db_sess.query(Doctor).filter(Doctor.id == id).first().shift
     form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     if request.method == "GET":
@@ -45,12 +48,17 @@ def edit_appointments(id):
             abort(404)
     if form.validate_on_submit():
         db_sess = db_session.create_session()
+        date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+        time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        if (date, time) in times:
+            return render_template('appointment.html', title='Перенос записи',
+                                   form=form, items=items, message="На это время уже есть запись.")
         appointments = db_sess.query(Appointment).filter(Appointment.id == id,
                                                          Appointment.user == current_user
                                                          ).first()
         if appointments:
-            appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
-            appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+            appointments.date = date
+            appointments.time = time
             db_sess.commit()
             return redirect('/api/history')
         else:
@@ -110,15 +118,22 @@ def appointment_doctor():
 def appointment_datetime():
     form = AppointmentDatetimeForm()
     db_sess = db_session.create_session()
+    appointments = db_sess.query(Appointment).filter(Appointment.doctor == session['appointment_data']["doctor"]).all()
+    times = [(i.date, i.time) for i in appointments]
     shift = db_sess.query(Doctor).filter(Doctor.name == session['appointment_data']["doctor"]).first().shift
     form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     items = [i for i in form][:-2]
     if form.validate_on_submit():
+        date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+        time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        if (date, time) in times:
+            return render_template('appointment.html', title='Выбор даты и времени приёма',
+                                   form=form, items=items, message="На это время уже есть запись.")
         appointments = Appointment()
         appointments.service = session['appointment_data']["service"]
         appointments.doctor = session['appointment_data']["doctor"]
-        appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
-        appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        appointments.date = date
+        appointments.time = time
         appointments.user_id = current_user.id
         db_sess = db_session.create_session()
         db_sess.add(appointments)
@@ -133,16 +148,24 @@ def appointment_datetime():
 def appointment_datetime_doctor(id):
     form = AppointmentDatetimeForm()
     db_sess = db_session.create_session()
+    doctor_name = db_sess.query(Doctor).filter(Doctor.id == id).first().name
+    appointments = db_sess.query(Appointment).filter(Appointment.doctor == doctor_name).all()
+    times = [(i.date, i.time) for i in appointments]
     shift = db_sess.query(Doctor).filter(Doctor.id == id).first().shift
     form.time.choices = form.times[0:12] if shift == 0 else form.times[12:24]
     items = [i for i in form][:-2]
     if form.validate_on_submit():
         db_sess = db_session.create_session()
+        date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
+        time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        if (date, time) in times:
+            return render_template('appointment.html', title='Выбор даты и времени приёма',
+                                   form=form, items=items, message="На это время уже есть запись.")
         appointments = Appointment()
         appointments.service = db_sess.query(Doctor).filter(Doctor.id == id).first().services.name
         appointments.doctor = db_sess.query(Doctor).filter(Doctor.id == id).first().name
-        appointments.date = datetime.strptime(form.date.data, '%Y-%m-%d').date()
-        appointments.time = datetime.strptime(form.time.data, '%H:%M:%S').time()
+        appointments.date = date
+        appointments.time = time
         appointments.user_id = current_user.id
         db_sess.add(appointments)
         db_sess.commit()

@@ -3,6 +3,8 @@ from wtforms import StringField, TextAreaField, DateTimeLocalField, SelectField
 from wtforms import SubmitField
 from wtforms.validators import DataRequired
 from datetime import datetime, date, time, timedelta
+from data import db_session
+from data.models.appointments import Appointment
 
 
 def add_time(t, delta):

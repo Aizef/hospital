@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, logout_user
 from data import db_session
 from data.models.doctors import Doctor
 from data.models.users import User
+from data.models.appointments import Appointment
 from forms.user import LoginForm, RegisterForm
 
 bp = Blueprint('main', __name__)
@@ -75,8 +76,9 @@ def doctors():
         doctors = db_sess.query(Doctor).all()
     else:
         doctors = db_sess.query(Doctor).filter(Doctor.service_id == specialty)
+    appointments = db_sess.query(Appointment).all()
     return render_template('doctors.html', title='История записей',
-                           doctors=doctors, shift_0=shift_0, shift_1=shift_1)
+                           doctors=doctors, shift_0=shift_0, shift_1=shift_1, appointments=appointments)
 
 
 @bp.route("/doctors/<int:id>")
