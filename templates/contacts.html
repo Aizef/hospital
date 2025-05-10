@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="text-center">
+    <h1>Наш адрес</h1>
+</header>
+
+<div class="map-container" style="width: 100%; height: 500px;">
+    <div id="map" style="width: 100%; height: 100%;"></div>
+</div>
+
+<script src="https://api-maps.yandex.ru/2.1/?apikey={{ map.yandex_maps_api_key }}&lang=ru_RU" type="text/javascript"></script>
+
+<script type="text/javascript">
+    ymaps.ready(init);
+
+    function init() {
+        var myMap = new ymaps.Map("map", {
+            center: [{{ map.latitude }}, {{ map.longitude }}],
+            zoom: {{ map.zoom }}
+        });
+
+        var myPlacemark = new ymaps.Placemark(
+            [{{ map.latitude }}, {{ map.longitude }}],
+            {
+                hintContent: '{{ map.placemark_text }}',
+                balloonContent: '{{ map.placemark_text }}'
+            }
+        );
+
+        myMap.geoObjects.add(myPlacemark);
+    }
+</script>
+
+<header class="text-center">
+    <h1>Контакты</h1>
+</header>
+<br>Телефон: +7 (999) 999-99-99
+<br>Email: info@altair-med.ru
+
+{% endblock %}
