@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bb8be8d-808f-4920-9043-5372e57fd46c" name="Changes" comment="">
+    <list default="true" id="7bb8be8d-808f-4920-9043-5372e57fd46c" name="Changes" comment="100">
+      <change afterPath="$PROJECT_DIR$/static/resources/main.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/hospital1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hospital1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2025_1_48_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2025_1_48__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/patient_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/patient_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms/appointment.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms/appointment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/main_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes/main_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contacts.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contacts.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +37,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Aizef/hospital.git&quot;,
-    &quot;accountId&quot;: &quot;4b42a27e-ab66-48ab-9417-e6dcc6de325f&quot;
+    &quot;accountId&quot;: &quot;c8258fba-5815-4756-8e5d-69136a4aefe1&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -60,6 +58,12 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\ProjectsPYCH\hospital\static\resources" />
+      <recent name="D:\ProjectsPYCH\hospital\static" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hospital1" />
@@ -92,7 +96,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
       </set>
     </attachedChunks>
   </component>
@@ -105,6 +109,15 @@
       <option name="presentableId" value="Default" />
       <updated>1744051484247</updated>
     </task>
+    <task id="LOCAL-00001" summary="100">
+      <option name="closed" value="true" />
+      <created>1746875107507</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746875107507</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -117,5 +130,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="100" />
+    <option name="LAST_COMMIT_MESSAGE" value="100" />
   </component>
 </project>

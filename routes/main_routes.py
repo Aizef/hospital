@@ -89,3 +89,14 @@ def doctors_search(id):
     doctors = db_sess.query(Doctor).filter(Doctor.service_id == id).all()
     return render_template('doctors.html', title='История записей',
                            doctors=doctors, shift_0=shift_0, shift_1=shift_1)
+
+@bp.route("/contacts")
+def contacts():
+    map_params = {
+        'yandex_maps_api_key': 'ваш_api_ключ',
+        'latitude': 55.660952,
+        'longitude': 37.476443,
+        'zoom': 15,
+        'placemark_text': 'Наш офис'
+    }
+    return render_template('contacts.html', title='Наши контакты', map=map_params)
